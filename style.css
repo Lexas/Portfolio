@@ -1,0 +1,179 @@
+
+
+
+/*div, header{
+	  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
+}
+*/
+
+body {
+	background-color: #D8E3D2; 
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+div{
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+footer{
+	padding-top: 1em !important;
+	position: absolute;
+}
+h1{
+	display: inline-block;
+	text-align: center;
+}
+header, #header{
+	display: block;
+	left: 5em;
+	margin-top: 1em;
+	position: absolute;
+	text-align: center;
+	top:30%;
+	width: 20em;
+	z-index: 2;
+}
+html{
+	height: 100%;
+	position: relative;
+	text-align: center;
+}
+nav li {
+	display: inline-block;
+	position: relative;
+	width: 40%;
+}
+nav li:nth-child(even){
+	margin-left: 0.5em;
+}
+nav a {
+	background-color: #F1F6CF;
+	color: #3B2004;
+	display: block;
+	line-height: 3em;
+	position: absolute;
+	text-decoration: none;
+	transition: all 0.2s;
+	width: 100%;
+}
+nav a:hover {
+	background-color: #3B2004;
+	color: #F1F6CF;
+}
+
+.clear{
+	clear:both;
+}
+.displayNone{
+	display: none;
+}
+.hidden{
+	height: 0;
+	position: absolute;
+	width: 0;
+}
+.highlight{
+	display: inline-block;
+	position:relative;
+	z-index: 1;
+}
+.home {
+	visibility: hidden;
+}
+
+#filters{
+	display: block;
+	width: 0;
+	height: 0;
+}
+#logo{
+	font-family: sans-serif;
+}
+#logo img{
+	width:80%;
+}
+/*#gradient{
+	background-image: linear-gradient(top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
+	background-image: -o-linear-gradient( top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
+	background-image: -moz-linear-gradient(top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
+	background-image: -webkit-linear-gradient(top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
+	background-image: -ms-linear-gradient(top, rgba(255,255,25, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+}*/
+#hugger{
+	display: block;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	word-wrap: break-word;
+
+}
+#mainContainer{
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+#name{
+	font-size: 2em;
+	margin-bottom: 1em;
+}
+.plane{
+	height:100%;
+	line-height: 0;
+	position: absolute;
+	text-align: left;
+	width:100%;
+	word-wrap:normal;
+}
+#mainPlane {
+	height: 100%;
+	min-width:40em;
+	overflow: visible;
+	position: absolute;
+	right: 0px;
+	width: 65%;
+	z-index: 1;
+	transition: all 0.7s;
+}
+#mainPlane a {
+	position: absolute;
+}
+
+
+/* =============================== Responsiveness ==================================== */
+
+
+@media screen and (min-width: 0em) and (max-width: 39.99em){	
+ 	#aboutPanel{
+		display: none;
+	}
+}
+@media screen and (min-width: 40em) and (max-width: 54.99em){
+	nav ul{
+		text-align: left;
+	}
+}
+@media screen and (min-width: 40em){
+	#mainPanel{
+		right: 30%;
+	}
+	#aboutPanel{
+		display: block;
+		left: 10%;
+	}
+}
+@media screen and (min-width: 55em) and (max-width: 76.99em) {
+}
+@media screen and (min-width: 77em){
+
+}
+
