@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+	<title>Elsa Balderrama - Porfolio</title>
+	<link rel="stylesheet" type="text/css" href="libs/gridpak/gridpak.css" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="libs/jquery.js"></script>
+	<script type="text/javascript" src="libs/cssrefresh.js"></script>
+	<script type="text/javascript" src="libs/gridpak/gridpak.js"></script>
+	<script type="text/javascript" src="libs/hammer/hammer.min.js"></script>
+	<script type="text/javascript" src="libs/svg.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+<svg id="filters" xmlns="http://www.w3.org/2000/svg">
+	<filter id="blur0" >
+  	  <feGaussianBlur stdDeviation="0"/>
+	 </filter>
+	<filter id="blur1" >
+  	  <feGaussianBlur stdDeviation="1"/> 
+	 </filter>
+	<filter id="blur2" >
+  	  <feGaussianBlur stdDeviation="3"/>
+	 </filter>
+	<filter id="blur3" >
+  	  <feGaussianBlur stdDeviation="6"/>
+	 </filter>
+	<filter id="blur4" >
+  	  <feGaussianBlur stdDeviation="10"/>
+	 </filter>
+	 <filter id="sat1">
+  	  	<feColorMatrix in = "SourceGraphic" type = "saturate" values = "8"/>
+	 </filter>
+</svg>
+<div id="hugger" class="row">
+	<div id="mainContainer" class="row col span8">
+		<div id="adjustHeader">
+			 <header class="col span4_6" id="header">
+			 	<div id="logo" class="col span4_6"> <img src="media/logo.png"/></div><!-- 
+			 	 --><div id="name">Elsa Balderrama</div>
+			 	<div class="clear"></div>
+			 	<nav>
+			 		<ul class="row">
+			 			<li class="row">
+			 				<a href="#CV" id="cv">CV & Portfolio</a>
+			 				<a href="#" class="home">Home</a>
+			 			</li>
+			 			<li class="row">
+			 				<a href="#Gallery" id="gallery">Samples</a>
+			 				<a href="#" class="home">Home</a>
+			 			</li>
+			 			<!-- <li class="col span1_6">Goodies</li>
+			 			<li class="col span1_6">Network</li> -->
+			 		</ul>
+			 	</nav>
+			 </header>
+		</div> <!-- adjustHeader -->
+		<div class="plane" id="mainPlane">
+		</div><!-- mainPlane -->
+		<div class="plane" id="aboutPlane">
+		</div><!-- aboutPlane -->
+		<div id="gradient"> 
+		</div>
+	</div><!-- mainContainer -->
+	<div id="iframeContainer"> 
+		<div> </div>
+	</div><!-- iframeContainer -->
+	<footer>
+		<div class="col span2_6">
+			&copy; Elsa M. Balderama <br>
+			mail@elsabalderrama.com
+		</div>
+	</footer>
+</div> <!-- hugger -->
+
+</body>
+</html>

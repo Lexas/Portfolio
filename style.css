@@ -18,23 +18,32 @@ div{
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
     box-sizing:border-box;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden; /* Chrome and Safari */
+    -moz-backface-visibility:hidden; /* Firefox */
+    -ms-backface-visibility:hidden; /* Internet Explorer */
 }
 footer{
-	padding-top: 1em !important;
-	position: absolute;
+	bottom: 0;
+	display: block;
+	height: 3em;
+	line-height: 1.5em;
+	position: absolute !important;
+	width: 100%;
+}
+footer div{
+	float:right;
 }
 h1{
 	display: inline-block;
 	text-align: center;
 }
 header, #header{
-	display: block;
-	left: 5em;
-	margin-top: 1em;
-	position: absolute;
+	display: inline-block;
+	left: -50%;
+	position: relative;
 	text-align: center;
-	top:30%;
-	width: 20em;
+	width: 15em;
 	z-index: 2;
 }
 html{
@@ -43,18 +52,20 @@ html{
 	text-align: center;
 }
 nav li {
-	display: inline-block;
+	display: block;
+	height: 2.5em;
+	margin: 5px 0;
 	position: relative;
-	width: 40%;
+	width: 80%;
 }
-nav li:nth-child(even){
+/*nav li:nth-child(even){
 	margin-left: 0.5em;
-}
+}*/
 nav a {
+	line-height: 2em;
 	background-color: #F1F6CF;
 	color: #3B2004;
 	display: block;
-	line-height: 3em;
 	position: absolute;
 	text-decoration: none;
 	transition: all 0.2s;
@@ -84,14 +95,47 @@ nav a:hover {
 .home {
 	visibility: hidden;
 }
-
+#adjustHeader{
+	left: 100%;
+	overflow: visible;
+	position: absolute;
+	text-align: center;
+	top: 10%;
+}
 #filters{
 	display: block;
 	width: 0;
 	height: 0;
 }
+#iframeContainer{
+	background-color: rgba(0, 0, 0, 0.7);
+	display: none;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition: all 0.5s;
+	width : 100%;
+	z-index: 2;
+}
+#iframeContainer > div{
+	border: 1px solid;
+	display: table-cell;
+	height: 100%;
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	width: 100%;
+}
+#iframeContainer > div > iframe {
+	background-color: #F1F6CF;
+	border: none;
+	display: inline-block;
+	overflow: hidden;
+}
 #logo{
 	font-family: sans-serif;
+	max-width: 100%;
 }
 #logo img{
 	width:80%;
@@ -114,13 +158,12 @@ nav a:hover {
 	position: relative;
 	width: 100%;
 	word-wrap: break-word;
-
 }
 #mainContainer{
+	float: left;
 	height: 100%;
-	overflow: hidden;
+	overflow: visible;
 	position: relative;
-	width: 100%;
 }
 #name{
 	font-size: 2em;
@@ -135,14 +178,16 @@ nav a:hover {
 	word-wrap:normal;
 }
 #mainPlane {
+	display: block;
 	height: 100%;
 	min-width:40em;
 	overflow: visible;
 	position: absolute;
-	right: 0px;
-	width: 65%;
-	z-index: 1;
+	right: 0;
+	text-align: right;
 	transition: all 0.7s;
+	width: 0px;
+	z-index: 1;
 }
 #mainPlane a {
 	position: absolute;

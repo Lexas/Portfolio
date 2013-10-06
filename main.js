@@ -22,12 +22,12 @@ function _init(){
 		opacity : 1,
 		blur : 0,
 		array : [
-			[0, 1, 1, 1, 1, 1, 1, 1, 1], 2,
-			[1, 1, 1, 1, 1, 1, 1, 1, 1], 2,
-			[1, 1, 1, 1, 1, 1, 1, 1, 1], 4,
-			[0, 1, 1, 1, 1, 1, 1, 1, 0, 1], 3,
-			[0, 0, 1, 1, 1, 1, 1, 1, 1, 1], 3,
-			[0, 0, 0, 0, 1, 1, 1, 1, 1, 1], 1,
+			[1, 1, 1, 1, 1], 2,
+			[1, 1, 1, 1, 1], 4,
+			[1, 1, 1, 1, 1], 2,
+			[1, 1, 1, 1], 3,
+			[1, 1, 1, 1, 1], 3,
+			[ 1, 1, 1, 1, 1], 1,
 		],
 		extras : function(){
 			// var svg = planes.main.svg;
@@ -50,27 +50,26 @@ function _init(){
 
 			var highlights = {
 				jellyfish : {
-					link : 'http://www.google.com',
+					link : '#jellyfish',
 					thumb : 'media/medusa_small.gif',
-					cell1: 14,
-					cell2: 14,
+					cell1: 7,
+					cell2: 7,
 					width: 2*8*em,
 					height: 1*8*em,
-					moveX : 3*8*em,
-					moveY : 0.5*8*em,
-					linkX : 3*8*em,
+					moveX : 1*8*em,
+					moveY : 1*8*em,
+					linkX : 1*8*em,
 					linkY : 1*8*em
 				}
 			};
 			drawThumbs();
 			function drawThumbs(){
-				var highlightLinks = document.getElementsByClassName('highlight');
 				var buffer = document.createDocumentFragment();
 				var i = 0;
 				var svg = planes.main.svg;
 				var triangles = planes.main.area._children;
 				for(i in highlights){
-					var image = planes.main.area.image(highlights[i].thumb, highlights[i].width).move(highlights[i].moveX, highlights[i].moveY);
+					var image = planes.main.area.image(highlights[i].thumb, highlights[i].width).move(highlights[i].moveX, highlights[i].moveY); 
 					var triangle1 = triangles[highlights[i].cell1];
 						triangle1.fill('#fff').stroke({width:0}); //fff
 					var mask = svg.mask().add(triangle1);
@@ -83,15 +82,13 @@ function _init(){
 					image.masker.click(function(){console.log('asdf')});
 
 					var a = document.createElement('a');
-					// var img = document.createElement('img');
-					// img.src = highlights[i].thumb;
 					a.style.width = highlights[i].width+"px";
 					a.style.height = highlights[i].height+"px";
 					a.href = highlights[i].link;
 					a.style.left = highlights[i].linkX + "px";
 					a.style.top = highlights[i].linkY + "px";
 					a.className = 'highlight';
-					// a.appendChild(img);
+					a.onclick = showIframe;
 					buffer.appendChild(a);
 				}
 				var mainPlane = document.getElementById('mainPlane');
@@ -149,7 +146,7 @@ function _init(){
 
 	document.getElementById('cv').onclick = function(ev){
 		var main = document.getElementById('mainPlane');
-		planes.main.area.animate(500, '<', 0).move(50*em, 0).scale(10)
+		planes.main.area.animate(500, '<', 0).move(20*em, 0).scale(5)
 		.after( function(){
 			main.style.display = 'none';
 			document.getElementById('gallery').nextElementSibling.style.visibility = 'hidden';
@@ -158,7 +155,7 @@ function _init(){
 		// main.style.transitionTimingFunction = 'ease-in';
 		// main.style.transform = 'translate('+ 100*em +'px , 0px) scale(2)';
 		var flag = true;
-		planes.about.area.animate(500, '<>', 0).scale(1).move(25*em, 0).attr({opacity:1})
+		planes.about.area.animate(500, '<>', 0).scale(1).move(10*em, 0).attr({opacity:1})
 		.during(function(pos){
 			if(pos <= 0.5 && flag){
 				planes.about.blur = 1;
@@ -227,7 +224,7 @@ function _init(){
 		var svg = plane.svg; //todo el plano
 		plane.area = plane.svg.group(); //area abarcada por objetos
 		var area = plane.area;
-		area.move(plane.x, plane.y);
+		// area.move(plane.x, plane.y);
 		area.scale(plane.scale);
 		area.opacity(plane.opacity);
 		var len = ev.data.array.length;
@@ -257,6 +254,31 @@ function _init(){
 		var rezise = setTimeout(function(){
 			window.onresize = resizeWindow;
 		}, 500);
+	}
+	function showIframe(ev){ //ToDo: make a closure to save states
+		var container = document.getElementById('iframeContainer');
+		var iframe = document.createElement('iframe');
+		iframe.src = 'samples/' + ev.target.hash.replace('#', '') + '/index.html';
+		iframe.onload = function(){
+			iframe.width = iframe.contentDocument.getElementById('hugger').offsetWidth;
+			iframe.height = iframe.contentDocument.getElementById('hugger').offsetHeight;
+		}
+		
+		
+		container.style.display = 'inline-table';
+		container.getElementsByTagName('div')[0].appendChild(iframe);
+		container.onclick = function(ev){
+			container.style.display = 'none';
+			container.getElementsByTagName('div')[0].removeChild(iframe);
+		};
+		iframe.onclick = function(ev){
+		    if(e && e.stopPropagation) {
+		        e.stopPropagation();
+		    } else {
+		          e = window.event;
+		          e.cancelBubble = true;
+		    }
+		};
 	}
 }
 
