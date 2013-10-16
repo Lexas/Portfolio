@@ -7,10 +7,11 @@
 	<link rel="stylesheet" type="text/css" href="libs/gridpak/gridpak.css" />
 	<link rel="stylesheet" type="text/css" href="style.css" />
 	<script type="text/javascript" src="libs/jquery.js"></script>
-	<script type="text/javascript" src="libs/cssrefresh.js"></script>
+	<!-- <script type="text/javascript" src="libs/cssrefresh.js"></script> -->
 	<script type="text/javascript" src="libs/gridpak/gridpak.js"></script>
 	<script type="text/javascript" src="libs/hammer/hammer.min.js"></script>
 	<script type="text/javascript" src="libs/svg.js"></script>
+	<script type="text/javascript" src="libs/svg-import.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </head>
 <body>
@@ -35,35 +36,28 @@
 	 </filter>
 </svg>
 <div id="hugger" class="row">
-	<div id="mainContainer" class="row col span8">
-		<div id="adjustHeader">
-			 <header class="col span4_6" id="header">
-			 	<div id="logo" class="col span4_6"> <img src="media/logo.png"/></div><!-- 
-			 	 --><div id="name">Elsa Balderrama</div>
-			 	<div class="clear"></div>
-			 	<nav>
-			 		<ul class="row">
-			 			<li class="row">
-			 				<a href="#CV" id="cv">CV & Portfolio</a>
-			 				<a href="#" class="home">Home</a>
-			 			</li>
-			 			<li class="row">
-			 				<a href="#Gallery" id="gallery">Samples</a>
-			 				<a href="#" class="home">Home</a>
-			 			</li>
-			 			<!-- <li class="col span1_6">Goodies</li>
-			 			<li class="col span1_6">Network</li> -->
-			 		</ul>
-			 	</nav>
-			 </header>
-		</div> <!-- adjustHeader -->
-		<div class="plane" id="mainPlane">
-		</div><!-- mainPlane -->
-		<div class="plane" id="aboutPlane">
-		</div><!-- aboutPlane -->
-		<div id="gradient"> 
-		</div>
-	</div><!-- mainContainer -->
+	<header class="col span4_6" id="header">
+		<div id="logo" class="col span4_6"> <img src="media/logo.png"/></div><!-- 
+		 --><div id="name">Elsa Balderrama</div>
+		<div class="clear"></div>
+		<nav>
+			<ul class="row">
+				<li class="row">
+					<a href="#CV" id="cv">CV & Portfolio</a>
+					<a href="#" class="home">Home</a>
+				</li>
+				<li class="row">
+					<a href="#Gallery" id="gallery">Samples</a>
+					<a href="#" class="home">Home</a>
+				</li>
+				<!-- <li class="col span1_6">Goodies</li>
+				<li class="col span1_6">Network</li> -->
+			</ul>
+		</nav>
+	</header>
+	<div id="wheelContainer">
+		<div>  </div>
+	</div><!-- wheelContainer -->
 	<div id="iframeContainer"> 
 		<div> </div>
 	</div><!-- iframeContainer -->

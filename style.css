@@ -7,7 +7,7 @@
 */
 
 body {
-	background-color: #D8E3D2; 
+	background-color: #F1F6CF; 
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -39,11 +39,10 @@ h1{
 	text-align: center;
 }
 header, #header{
-	display: inline-block;
-	left: -50%;
-	position: relative;
+	display: block;
+	position: absolute;
 	text-align: center;
-	width: 15em;
+	width: 12em;
 	z-index: 2;
 }
 html{
@@ -95,13 +94,6 @@ nav a:hover {
 .home {
 	visibility: hidden;
 }
-#adjustHeader{
-	left: 100%;
-	overflow: visible;
-	position: absolute;
-	text-align: center;
-	top: 10%;
-}
 #filters{
 	display: block;
 	width: 0;
@@ -112,9 +104,7 @@ nav a:hover {
 	display: none;
 	height: 100%;
 	position: absolute;
-	top: 0;
-	left: 0;
-	transition: all 0.5s;
+	/*transition: all 0.5s;*/
 	width : 100%;
 	z-index: 2;
 }
@@ -159,11 +149,35 @@ nav a:hover {
 	width: 100%;
 	word-wrap: break-word;
 }
-#mainContainer{
-	float: left;
-	height: 100%;
+#wheelContainer{
+	margin: auto;
+	height: 90%;
 	overflow: visible;
+	padding: 0;
 	position: relative;
+	width: 100%;
+}
+#wheelContainer > div{
+	display: none;
+	margin: auto;
+	overflow: visible;
+	padding: 0;
+	position: absolute;
+	width: 100%;
+}
+#wheelContainer > div > div{
+	background-color: #0000FF;
+	display: block;
+	margin: auto;
+	padding: 0;
+	position: relative;
+	width: 0;
+}
+#wheelContainer svg{
+	display: block;
+	height: 100%;
+	margin: auto;
+	width: 100%;
 }
 #name{
 	font-size: 2em;
@@ -177,30 +191,15 @@ nav a:hover {
 	width:100%;
 	word-wrap:normal;
 }
-#mainPlane {
+#wheelCenter{
 	display: block;
-	height: 100%;
-	min-width:40em;
-	overflow: visible;
-	position: absolute;
-	right: 0;
-	text-align: right;
-	transition: all 0.7s;
-	width: 0px;
-	z-index: 1;
+	margin:0;
 }
-#mainPlane a {
-	position: absolute;
-}
-
 
 /* =============================== Responsiveness ==================================== */
 
 
 @media screen and (min-width: 0em) and (max-width: 39.99em){	
- 	#aboutPanel{
-		display: none;
-	}
 }
 @media screen and (min-width: 40em) and (max-width: 54.99em){
 	nav ul{
@@ -208,13 +207,6 @@ nav a:hover {
 	}
 }
 @media screen and (min-width: 40em){
-	#mainPanel{
-		right: 30%;
-	}
-	#aboutPanel{
-		display: block;
-		left: 10%;
-	}
 }
 @media screen and (min-width: 55em) and (max-width: 76.99em) {
 }
