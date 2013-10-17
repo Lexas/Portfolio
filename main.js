@@ -3,7 +3,7 @@ window.onload = _init;
 function _init(){
 	gridpak.bootstrap();
 	// var hammer = Hammer(body).on('swipe', function(){console.log('tap!, ')});	
-	var svg = SVG('wheelContainer', '90%');
+	var svg = SVG('wheelContainer');
 	svg.attr('id', 'svgWheel');
 	var wheel;
 	var centerBox2 = centerBox3 = centerBox1 = null;
@@ -13,10 +13,33 @@ function _init(){
 	setTimeout(function(){
 		$.get('media/wheel0.svg', _importWheel, 'text');
 	}, 1);
-	
+	_initMenus();
 	function _importWheel(data){
 		wheel = svg.svg(data);
 		_initWheel();
+	}
+	function _initMenus () {
+		var loaded = [];
+		var current = "wheelContainer";
+		$('a').on('click', open);
+		function open (ev) {
+			var page = ev.target.href.split('#')[1] + "Area";
+			page = page == '' ? 'wheelContainer' : page;
+			if(current != page){
+				if(loaded.indexOf(page) >= 0){
+					$('#'+current).css('display', 'none');
+					$('#'+page).css('display', 'inline-block');
+				} else {
+					$.get('pages/' + ev.target.href.split('#')[1], loadPage);
+				}
+			}
+			function loadPage(data){
+				current = ev.target.id;
+				loaded.push(current);
+				$('#'+current).css('display', 'none');
+				$('#'+hugger).append(data);
+			}
+		}
 	}
 	function _initWheel(){
 		centerBox1 = svg.bbox();
@@ -55,80 +78,8 @@ function _init(){
 			image.link = highlights[i].media;
 			image.click(loadWheelCenter);
 		}
-
-		// window.onresize = resizeWindow;
+		window.onresize = resizeWindow;
 	}
-
-	// document.getElementById('cv').onclick = function(ev){
-	// 	var main = document.getElementById('mainPlane');
-	// 	planes.main.area.animate(500, '<', 0).move(20*em, 0).scale(5)
-	// 	.after( function(){
-	// 		main.style.display = 'none';
-	// 		document.getElementById('gallery').nextElementSibling.style.visibility = 'hidden';
-	// 		ev.target.nextElementSibling.style.visibility = 'visible';
-	// 	});
-	// 	// main.style.transitionTimingFunction = 'ease-in';
-	// 	// main.style.transform = 'translate('+ 100*em +'px , 0px) scale(2)';
-	// 	var flag = true;
-	// 	planes.about.area.animate(500, '<>', 0).scale(1).move(10*em, 0).attr({opacity:1})
-	// 	.during(function(pos){
-	// 		if(pos <= 0.5 && flag){
-	// 			planes.about.blur = 1;
-	// 			flag = false;
-	// 			blur('about');
-	// 		} else if(pos <= 1 && !flag){
-	// 			planes.about.blur = 0;
-	// 			flag = true;
-	// 			blur('about');
-	// 		}
-	// 	});
-	// };
-	// var homes = document.getElementsByClassName('home');
-	// var len = homes.length;
-	// for(var i = 0; i < len; i++){
-	// 	homes[i].onclick = function(ev){
-	// 		var main = document.getElementById('mainPlane');
-	// 		main.style.display = 'block';
-	// 		planes.main.area.animate(500, '<', 0).move(0, 0).scale(1)
-	// 		.after( function(){
-	// 			var home = document.getElementsByClassName('home');
-	// 			var len = home.length;
-	// 			for(var i = 0; i < len; i++){
-	// 				home[i].style.visibility = 'hidden';
-	// 			}
-	// 		});
-	// 		var flag = true;
-	// 		planes.about.area.animate(500, '<>', 0).scale(1).move(planes.about.x, 0).attr({opacity:0.4}).scale(0.3)
-	// 		.during(function(pos){
-	// 			if(pos <= 0.5 && flag){
-	// 				planes.about.blur = 1;
-	// 				flag = false;
-	// 				blur('about');
-	// 			} else if(pos <= 1 && !flag){
-	// 				planes.about.blur = 2;
-	// 				flag = true;
-	// 				blur('about');
-	// 			}
-	// 		});
-	// 	}
-	// }
-	
-	// document.getElementById('gallery').onclick = function(ev){
-	// 	var main = document.getElementById('mainPlane');
-	// 	planes.main.area.animate(500, '<', 0).scale(1).move(-getWindowPercentage(100), 0)
-	// 	.after( function(){
-	// 		main.style.display = 'block';
-	// 		document.getElementById('cv').nextElementSibling.style.visibility = 'hidden';
-	// 		ev.target.nextElementSibling.style.visibility = 'visible';
-	// 	});
-	// 	var flag = true;
-	// 	planes.about.area.animate(500, '<>', 0).scale(0.3).move(-20*em, 0)
-	// 	.after(function(){
-	// 		document.getElementById('aboutPlane').display = 'none';
-	// 	});
-	// }
-
-
 	function getEm() {
 		var emDiv = document.createElement('div');
 		emDiv.style.width = '1em';
@@ -179,19 +130,21 @@ function _init(){
 	}
 	function positionWheelCenter () {
 		/* toDo: no need to set properties each time */
-		if(iframe){
-			iframe.width = centerBox3.width;
-			iframe.height = centerBox3.height;
-		}
 		if(container){
 			if(typeof document.getElementById('wheelContainer').style.webkitMask != 'undefined'){
+				container.style.display = 'inline-table';
+				iframe.style.width = "100%";
+				iframe.style.height = "100%";
+				iframe.style.margin = "auto";
+				iframe.style.marginTop = centerBox2.cy*0.9 + "px";
 				container.style.webkitMaskBoxImage = 'url(media/center.svg) stretch';
-				container.style.width = (svg.node.clientHeight) + 'px';
-				container.style.height = (svg.node.clientHeight) + 'px';
-				// container.style.left = svg.node.clientHeight*0.0004  + "px";
-				// container.style.top = -svg.node.clientHeight*0.0005 + "px";
+				container.style.width = (svg.node.offsetWidth) + 'px';
+				container.style.height = (svg.node.offsetHeight) + 'px';
+				container.style.marginLeft = -centerBox2.x  + "px";
+				container.style.marginTop = centerBox2.y + "px";
 			} else {
-				console.log(centerBox1, centerBox2, centerBox3);
+				iframe.width = centerBox3.width;
+				iframe.height = centerBox3.height;
 				container.style.width = (centerBox2.width) + 'px';
 				container.style.height = (centerBox2.height) + 'px';
 				container.style.left = centerBox3.y  + "px";
@@ -210,10 +163,9 @@ function _init(){
 			center = svg.path(wheel.center.attr('d'));
 			center.attr({fill:'#fff', stroke:'#fff', 'stroke-width': 0.5});
 			centerBox2 = svg.rbox();
-			centerBox3 = wheel.center.rbox();
+			centerBox3 = center.rbox();
 			/* Note: wheel.center keeps displayed measures not obtainable trough defs */
-			center.translate(centerBox3.y*0.05, centerBox3.y*0.07);
-			console.log(center);
+			center.translate(centerBox3.y*0.043, centerBox3.y*0.07);
 			center.scale(
 				((centerBox2.cy) / (centerBox1.cy))
 			);
@@ -228,10 +180,6 @@ function _init(){
 		var container = document.getElementById('iframeContainer');
 		var iframe = document.createElement('iframe');
 		iframe.src = 'samples/' + ev.target.instance.link + '/';
-		iframe.onload = function(){
-			iframe.width = iframe.contentDocument.getElementById('hugger').offsetWidth;
-			iframe.height = iframe.contentDocument.getElementById('hugger').offsetHeight;
-		}
 		container.style.display = 'inline-table';
 		container.getElementsByTagName('div')[0].appendChild(iframe);
 		container.onclick = function(ev){
