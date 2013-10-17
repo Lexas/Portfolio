@@ -8,10 +8,12 @@
 
 body {
 	background-color: #F1F6CF; 
+	display: inline-table;
 	height: 100%;
 	margin: 0;
 	padding: 0;
 	position: relative;
+	width: 100%;
 }
 div{
     box-sizing: border-box;
@@ -24,25 +26,21 @@ div{
     -ms-backface-visibility:hidden; /* Internet Explorer */
 }
 footer{
-	bottom: 0;
-	display: block;
+	bottom:1em;
+	display: block !important;
 	height: 3em;
 	line-height: 1.5em;
 	position: absolute !important;
-	width: 100%;
-}
-footer div{
-	float:right;
+	right: 0;
 }
 h1{
 	display: inline-block;
 	text-align: center;
 }
 header, #header{
-	display: block;
-	position: absolute;
+	margin-top: 1em;
+	position: relative;
 	text-align: center;
-	width: 12em;
 	z-index: 2;
 }
 html{
@@ -51,9 +49,9 @@ html{
 	text-align: center;
 }
 nav li {
-	display: block;
 	height: 2.5em;
-	margin: 5px 0;
+	margin: 5px -2px;
+	max-width: 2.5cm;
 	position: relative;
 	width: 80%;
 }
@@ -65,6 +63,7 @@ nav a {
 	background-color: #F1F6CF;
 	color: #3B2004;
 	display: block;
+	line-height: 3em;
 	position: absolute;
 	text-decoration: none;
 	transition: all 0.2s;
@@ -90,9 +89,6 @@ nav a:hover {
 	display: inline-block;
 	position:relative;
 	z-index: 1;
-}
-.home {
-	visibility: hidden;
 }
 #filters{
 	display: block;
@@ -125,37 +121,25 @@ nav a:hover {
 }
 #logo{
 	font-family: sans-serif;
-	max-width: 100%;
+	max-width: 3cm;
 }
 #logo img{
-	width:80%;
+	width:100%;
 }
-/*#gradient{
-	background-image: linear-gradient(top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
-	background-image: -o-linear-gradient( top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
-	background-image: -moz-linear-gradient(top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
-	background-image: -webkit-linear-gradient(top, rgba(255,255,255, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
-	background-image: -ms-linear-gradient(top, rgba(255,255,25, 0.3) 10%, rgba(255,255,255,0) 30%, rgba(0,0, 0, 0.3) 90%);
-	height: 100%;
-	position: absolute;
-	width: 100%;
-	z-index: 1;
-}*/
 #hugger{
-	display: block;
+	display: table-cell;
 	height: 100%;
 	overflow: hidden;
 	position: relative;
+	vertical-align: middle;
 	width: 100%;
 	word-wrap: break-word;
 }
 #wheelContainer{
-	margin: auto;
-	height: 90%;
-	overflow: visible;
+	margin-left: 1em;
+	max-height: 90%;
 	padding: 0;
 	position: relative;
-	width: 100%;
 }
 #wheelContainer > div{
 	display: none;
@@ -166,7 +150,6 @@ nav a:hover {
 	width: 100%;
 }
 #wheelContainer > div > div{
-	background-color: #0000FF;
 	display: block;
 	margin: auto;
 	padding: 0;
@@ -207,10 +190,18 @@ nav a:hover {
 	}
 }
 @media screen and (min-width: 40em){
+	#wheelContainer{
+		max-width: 80%;
+	}
 }
 @media screen and (min-width: 55em) and (max-width: 76.99em) {
+	#wheelContainer{
+		max-width: 80%;
+	}
 }
 @media screen and (min-width: 77em){
-
+	#wheelContainer{
+		max-width: 40%;
+	}
 }
 

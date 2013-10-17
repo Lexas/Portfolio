@@ -7,6 +7,8 @@ function _init(){
 	svg.attr('id', 'svgWheel');
 	var wheel;
 	var centerBox2 = centerBox3 = centerBox1 = null;
+	var centerMask, center, centerPos; /* ToDo: make closure */
+	var container, iframe = null;
 	/* bbox and rbox returns empty values in chrome, dunno which is the async function causing the problem, thanks chrome! */
 	setTimeout(function(){
 		$.get('media/wheel0.svg', _importWheel, 'text');
@@ -19,19 +21,19 @@ function _init(){
 	function _initWheel(){
 		centerBox1 = svg.bbox();
 		svg.attr('viewBox', '0 0 298.4 298.4'); //scale elements to fit svg
-		wheel.center.attr({fill:'#fff', stroke:'#000', 'stroke-width': 0});
-		centerBox2 = svg.rbox();
-		centerBox3 = wheel.center.rbox();
-		wheel.center.translate(-centerBox3.y + (centerBox3.y * 0.06), -centerBox3.y - (centerBox3.y * 0.005));
-		wheel.center.scale(
-			((centerBox2.cy) / (centerBox1.cy))
-		);
-		var centerMask = svg.mask().add(wheel.center);
+		centerMask = svg.mask();
 		centerMask.attr({'id': 'centerMask'});
+		resizeWindow();
 		var highlights = [
 			{
 				link : 'jellyfish',
-				thumb : 'media/medusa_small.gif'
+				thumb : 'medusa_small.gif', /* hint: /media/thumbs/? */
+				media : 'jellyfish' /* hint: /samples/? */
+			},
+			{
+				link : 'goat',
+				thumb : 'goat.png',
+				media : 'goat.png'
 			}
 		];
 		var buffer = document.createDocumentFragment();
@@ -39,11 +41,18 @@ function _init(){
 		var len = highlights.length;
 		for(i; i < len; i++){
 			hl = wheel['hl'+(i+1)];
-			var image = wheel.layer1.image(highlights[i].thumb, highlights[i].width);
+			hlBox = hl.bbox();
+			var image = wheel.layer1.image( 'media/thumbs/' + highlights[i].thumb, highlights[i].width); /* ToDo: make conf file with prefixes */
 			hl.attr({fill:'#fff', stroke:'#000', 'stroke-width':1});
+			image.attr({ 
+				x: hlBox.x, 
+				y: hlBox.y,
+				width: 50,
+				height: 50
+			});
 			var mask = svg.mask().add(hl);
 			image.maskWith(mask);
-			image.link = highlights[i].link;
+			image.link = highlights[i].media;
 			image.click(loadWheelCenter);
 		}
 
@@ -137,31 +146,23 @@ function _init(){
 	}
 	function loadWheelCenter(ev) {
 		var wheelContainer = document.getElementById('wheelContainer').getElementsByTagName('div')[0];
-		var container = document.createElement('div');
-		var iframe = document.createElement('iframe');
+		if ( container ){
+			wheelContainer.removeChild(container);
+		}
+		container = document.createElement('div');
+		iframe = document.createElement('iframe');
 		iframe.src = 'samples/' + ev.target.instance.link + '/';
 		iframe.onload = function(){
-			iframe.width = centerBox3.width + 5 ;
-			iframe.height = centerBox3.height + 5;
+			iframe.width = centerBox3.width;
+			iframe.height = centerBox3.height;
 		}
-		if(typeof document.getElementById('wheelContainer').style.webkitMask != 'undefined'){
-			container.style.webkitMaskBoxImage = 'url(media/center.svg) stretch';
-			container.style.width = (svg.node.clientHeight) + 'px';
-			container.style.height = (svg.node.clientHeight) + 'px';
-		} else {
-			console.log(centerBox1, centerBox2, centerBox3);
-			container.style.width = (centerBox2.height) + 'px';
-			container.style.height = (centerBox2.height) + 'px';
-			container.style.left = centerBox3.y  + "px";
-			container.style.top = centerBox3.y + "px";
-			container.style.mask = 'url(#centerMask)';
-		}
+		positionWheelCenter();
 		wheelContainer.style.display = 'block';
 		container.style.zIndex = "-1";
 		iframe.setAttribute('id', 'wheelCenter');
 		iframe.style.overflow = "hidden";
 		iframe.style.border = "none";
-		// container.appendChild(iframe);
+		container.appendChild(iframe);
 		wheelContainer.appendChild(container);
 		container.onclick = function(ev){
 			container.style.display = 'none';
@@ -176,9 +177,50 @@ function _init(){
 		    }
 		};
 	}
-	function resizeWindow () {
+	function positionWheelCenter () {
+		/* toDo: no need to set properties each time */
+		if(iframe){
+			iframe.width = centerBox3.width;
+			iframe.height = centerBox3.height;
+		}
+		if(container){
+			if(typeof document.getElementById('wheelContainer').style.webkitMask != 'undefined'){
+				container.style.webkitMaskBoxImage = 'url(media/center.svg) stretch';
+				container.style.width = (svg.node.clientHeight) + 'px';
+				container.style.height = (svg.node.clientHeight) + 'px';
+				// container.style.left = svg.node.clientHeight*0.0004  + "px";
+				// container.style.top = -svg.node.clientHeight*0.0005 + "px";
+			} else {
+				console.log(centerBox1, centerBox2, centerBox3);
+				container.style.width = (centerBox2.width) + 'px';
+				container.style.height = (centerBox2.height) + 'px';
+				container.style.left = centerBox3.y  + "px";
+				container.style.top = centerBox3.y + "px";
+				container.style.mask = 'url(#centerMask)';
+			}
+		}
+	}
+	function resizeWindow (ev) {
 		window.onresize = null;
 		var rezise = setTimeout(function(){
+			if (center != null) {
+				center.remove();
+				delete center;
+			}
+			center = svg.path(wheel.center.attr('d'));
+			center.attr({fill:'#fff', stroke:'#fff', 'stroke-width': 0.5});
+			centerBox2 = svg.rbox();
+			centerBox3 = wheel.center.rbox();
+			/* Note: wheel.center keeps displayed measures not obtainable trough defs */
+			center.translate(centerBox3.y*0.05, centerBox3.y*0.07);
+			console.log(center);
+			center.scale(
+				((centerBox2.cy) / (centerBox1.cy))
+			);
+			centerMask.add(center);
+			if(ev){
+				positionWheelCenter();
+			}
 			window.onresize = resizeWindow;
 		}, 500);
 	}
