@@ -90,6 +90,25 @@ nav a:hover {
 	position:relative;
 	z-index: 1;
 }
+.page{
+	display: none;
+	position: absolute;
+}
+#homePage{
+	display: inline-block;
+	height: 90%;
+	margin: 0;
+	position: relative;
+}
+#hugger{
+	display: table-cell;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	vertical-align: middle;
+	width: 100%;
+	word-wrap: break-word;
+}
 #filters{
 	display: block;
 	width: 0;
@@ -101,24 +120,22 @@ nav a:hover {
 	height: 100%;
 	position: absolute;
 	/*transition: all 0.5s;*/
-	width : 100%;
-	z-index: 2;
-}
-#iframeContainer > div{
-	border: 1px solid;
-	display: table-cell;
-	height: 100%;
-	position: relative;
 	text-align: center;
 	vertical-align: middle;
-	width: 100%;
+	width : 100%;
+	z-index: -2;
 }
-#iframeContainer > div > iframe {
+#iframeContainer > iframe {
 	background-color: #F1F6CF;
 	border: none;
 	display: block;
+	height: 100%;
 	margin: auto;
 	overflow: hidden;
+	width: 100%;
+}
+#iframeContainer > img {
+	width: 100%;
 }
 #logo{
 	font-family: sans-serif;
@@ -126,15 +143,6 @@ nav a:hover {
 }
 #logo img{
 	width:100%;
-}
-#hugger{
-	display: table-cell;
-	height: 100%;
-	overflow: hidden;
-	position: relative;
-	vertical-align: middle;
-	width: 100%;
-	word-wrap: break-word;
 }
 #wheelContainer{
 	margin-left: 1em;
@@ -144,6 +152,7 @@ nav a:hover {
 }
 #wheelContainer > div{
 	display: none;
+	height: 100%;
 	margin: auto;
 	overflow: visible;
 	padding: 0;
@@ -190,17 +199,17 @@ nav a:hover {
 	}
 }
 @media screen and (min-width: 40em){
-	#wheelContainer{
+	#homePage{
 		max-width: 80%;
 	}
 }
 @media screen and (min-width: 55em) and (max-width: 76.99em) {
-	#wheelContainer{
+	#homePage{
 		max-width: 80%;
 	}
 }
 @media screen and (min-width: 77em){
-	#wheelContainer{
+	#homePage{
 		max-width: 40%;
 	}
 }

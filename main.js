@@ -1,6 +1,7 @@
 
 window.onload = _init;
 function _init(){
+	var ajax = qwest;
 	gridpak.bootstrap();
 	// var hammer = Hammer(body).on('swipe', function(){console.log('tap!, ')});	
 	var svg = SVG('wheelContainer');
@@ -8,36 +9,50 @@ function _init(){
 	var wheel;
 	var centerBox2 = centerBox3 = centerBox1 = null;
 	var centerMask, center, centerPos; /* ToDo: make closure */
-	var container, iframe = null;
+	var iframeContainer = document.getElementById('iframeContainer');
+	var iframe = iframeContainer.getElementsByTagName('iframe')[0];
 	/* bbox and rbox returns empty values in chrome, dunno which is the async function causing the problem, thanks chrome! */
 	setTimeout(function(){
 		$.get('media/wheel0.svg', _importWheel, 'text');
-	}, 1);
+	}, 100);
 	_initMenus();
 	function _importWheel(data){
 		wheel = svg.svg(data);
 		_initWheel();
 	}
 	function _initMenus () {
-		var loaded = [];
-		var current = "wheelContainer";
-		$('a').on('click', open);
+		var loaded = ['homePage', 'cvPage', 'contactPage'];
+		var current = "homePage";
+		var links = document.getElementsByTagName('nav')[0].getElementsByTagName('a');
+		var len = links.length;
+		for (var i = 0; i < len; i++){
+			links[i].onclick = open;
+		}
 		function open (ev) {
-			var page = ev.target.href.split('#')[1] + "Area";
-			page = page == '' ? 'wheelContainer' : page;
+			var page = ev.target.dataset.open;
 			if(current != page){
-				if(loaded.indexOf(page) >= 0){
-					$('#'+current).css('display', 'none');
-					$('#'+page).css('display', 'inline-block');
+				if(loaded.indexOf(page) <= 0){ //not loaded yet
+					ajax.get(page).success(loadPage);
 				} else {
-					$.get('pages/' + ev.target.href.split('#')[1], loadPage);
+					var currPage = document.getElementById(current);
+					currPage.style.display = 'none';
+					var div = document.getElementById(page);
+					div.style.position = 'relative';
+					div.style.display = 'inline-block';
 				}
 			}
 			function loadPage(data){
-				current = ev.target.id;
+				/* ToDo: put in closure */
+				var currPage = document.getElementById(current);
+				currpage.style.display = 'none';
+				var hugger = document.getElementById('hugger');
+				var div = document.createElement('div');
+				div.innerHtml = data;
+				div.style.position = 'relative';
+				hugger.appendChild(div);
+				current = ev.target.dataset.open;
 				loaded.push(current);
-				$('#'+current).css('display', 'none');
-				$('#'+hugger).append(data);
+				div.style.display = 'inline-block';
 			}
 		}
 	}
@@ -51,12 +66,14 @@ function _init(){
 			{
 				link : 'jellyfish',
 				thumb : 'medusa_small.gif', /* hint: /media/thumbs/? */
-				media : 'jellyfish' /* hint: /samples/? */
+				media : 'jellyfish', /* hint: /samples/? */
+				type : 'code'
 			},
 			{
 				link : 'goat',
 				thumb : 'goat.png',
-				media : 'goat.png'
+				media : 'goat.png',
+				type : 'image'
 			}
 		];
 		var buffer = document.createDocumentFragment();
@@ -76,6 +93,7 @@ function _init(){
 			var mask = svg.mask().add(hl);
 			image.maskWith(mask);
 			image.link = highlights[i].media;
+			image.type = highlights[i].type;
 			image.click(loadWheelCenter);
 		}
 		window.onresize = resizeWindow;
@@ -96,66 +114,33 @@ function _init(){
 		}
 	}
 	function loadWheelCenter(ev) {
-		var wheelContainer = document.getElementById('wheelContainer').getElementsByTagName('div')[0];
-		if ( container ){
-			wheelContainer.removeChild(container);
+		iframeContainer.style.display = 'none';
+		iframeContainer.removeChild(iframe);
+		if(ev.target.instance.type == 'image'){
+			iframe = document.createElement('img');
+		} else {
+			iframe = document.createElement('iframe');
 		}
-		container = document.createElement('div');
-		iframe = document.createElement('iframe');
 		iframe.src = 'samples/' + ev.target.instance.link + '/';
-		iframe.onload = function(){
-			iframe.width = centerBox3.width;
-			iframe.height = centerBox3.height;
-		}
+		iframeContainer.appendChild(iframe);
 		positionWheelCenter();
-		wheelContainer.style.display = 'block';
-		container.style.zIndex = "-1";
-		iframe.setAttribute('id', 'wheelCenter');
-		iframe.style.overflow = "hidden";
-		iframe.style.border = "none";
-		container.appendChild(iframe);
-		wheelContainer.appendChild(container);
-		container.onclick = function(ev){
-			container.style.display = 'none';
-			container.getElementsByTagName('div')[0].removeChild(iframe);
-		};
-		iframe.onclick = function(ev){
-		    if(e && e.stopPropagation) {
-		        e.stopPropagation();
-		    } else {
-		          e = window.event;
-		          e.cancelBubble = true;
-		    }
-		};
+		iframeContainer.style.display = 'block';
 	}
 	function positionWheelCenter () {
 		/* toDo: no need to set properties each time */
-		if(container){
+		if(iframeContainer){
 			if(typeof document.getElementById('wheelContainer').style.webkitMask != 'undefined'){
-				container.style.display = 'inline-table';
-				iframe.style.width = "100%";
-				iframe.style.height = "100%";
-				iframe.style.margin = "auto";
-				iframe.style.marginTop = centerBox2.cy*0.9 + "px";
-				container.style.webkitMaskBoxImage = 'url(media/center.svg) stretch';
-				container.style.width = (svg.node.offsetWidth) + 'px';
-				container.style.height = (svg.node.offsetHeight) + 'px';
-				container.style.marginLeft = -centerBox2.x  + "px";
-				container.style.marginTop = centerBox2.y + "px";
+				iframeContainer.style.webkitMaskBoxImage = 'url(media/center.svg) stretch';
 			} else {
-				iframe.width = centerBox3.width;
-				iframe.height = centerBox3.height;
-				container.style.width = (centerBox2.width) + 'px';
-				container.style.height = (centerBox2.height) + 'px';
-				container.style.left = centerBox3.y  + "px";
-				container.style.top = centerBox3.y + "px";
-				container.style.mask = 'url(#centerMask)';
+				iframeContainer.style.left = '-1px';
+				iframeContainer.style.top = '-2px';
+				iframeContainer.style.mask = 'url(#centerMask)';
 			}
 		}
 	}
 	function resizeWindow (ev) {
 		window.onresize = null;
-		var rezise = setTimeout(function(){
+		var resize = setTimeout(function(){
 			if (center != null) {
 				center.remove();
 				delete center;
@@ -164,36 +149,18 @@ function _init(){
 			center.attr({fill:'#fff', stroke:'#fff', 'stroke-width': 0.5});
 			centerBox2 = svg.rbox();
 			centerBox3 = center.rbox();
-			/* Note: wheel.center keeps displayed measures not obtainable trough defs */
-			center.translate(centerBox3.y*0.043, centerBox3.y*0.07);
-			center.scale(
-				((centerBox2.cy) / (centerBox1.cy))
-			);
+			/* Note: wheel.center keeps displayed measures not obtainable trough svg defs */
+			/* Note: webkit wont translate, but it keeps the position of the mask */
+			var ty = centerBox3.y + centerBox3.cy + window.pageYOffset;
+			var tx = centerBox3.x + centerBox3.cx + window.pageXOffset;
+			center.translate(tx, ty);
+			center.scale(centerBox2.cx / centerBox1.cx);
 			centerMask.add(center);
 			if(ev){
 				positionWheelCenter();
 			}
 			window.onresize = resizeWindow;
 		}, 500);
-	}
-	function showIframe(ev){ //ToDo: make a closure to save states
-		var container = document.getElementById('iframeContainer');
-		var iframe = document.createElement('iframe');
-		iframe.src = 'samples/' + ev.target.instance.link + '/';
-		container.style.display = 'inline-table';
-		container.getElementsByTagName('div')[0].appendChild(iframe);
-		container.onclick = function(ev){
-			container.style.display = 'none';
-			container.getElementsByTagName('div')[0].removeChild(iframe);
-		};
-		iframe.onclick = function(ev){
-		    if(e && e.stopPropagation) {
-		        e.stopPropagation();
-		    } else {
-		          e = window.event;
-		          e.cancelBubble = true;
-		    }
-		};
 	}
 }
 
